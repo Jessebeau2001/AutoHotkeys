@@ -1,10 +1,9 @@
 ^F5::Reload
 
 ^Numpad7::
-Send {Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}{Tab}{Tab}{Tab}{Enter}
-Sleep, 800
+Send {Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}{Tab}{Tab}{Tab}{Enter}{Enter}
+Sleep, 1500
 Send {Enter}
-MsgBox Done
 return
 
 ^Numpad8::
@@ -18,5 +17,26 @@ return
 ^Numpad0::
 Send {F4}
 Sleep, 200
-Send {Tab}{Tab}1901
+Send {Tab}{Tab}
+WinActivate Dossier Klanten
+MouseMove, 400, 125
+KeyWait, Control
+Click
+Send {F2}^{Left}^{Left}^{Left}^{Left}^{Left}+^{Right}
+Send +{Left}^c{esc}
+WinActivate Index voor nieuw document
+Send ^v
+Sleep, 3000
+Send {Down}{Enter}
+Send {Tab}{Tab}
 return
+
+^p::
+WinActivate Dossier Klanten
+MouseMove, 400, 125
+KeyWait, Control
+Click
+Send {F2}^{Left}^{Left}^{Left}^{Left}+^{Right}
+Send +{Left}^c{esc}
+WinActivate Index
+Return
