@@ -33,10 +33,14 @@ return
 
 ^p::
 WinActivate Dossier Klanten
-MouseMove, 400, 125
-KeyWait, Control
-Click
-Send {F2}^{Left}^{Left}^{Left}^{Left}+^{Right}
-Send +{Left}^c{esc}
-WinActivate Index
-Return
+Send Home
+KeyWait Control
+Sleep, 400
+Send {Del}
+KeyWait, Enter, D
+Sleep, 1000
+WinActivate Dossier Klanten
+MouseClickDrag, Left, 400, 125, -1800, -200
+WinActivate ELO
+Send ^t{Up}
+return
