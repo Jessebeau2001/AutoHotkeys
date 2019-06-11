@@ -19,14 +19,11 @@ Send {F4}
 Sleep, 200
 Send {Tab}{Tab}
 WinActivate Dossier Klanten
-MouseMove, 400, 125
-KeyWait, Control
-Click
-Send {F2}^{Left}^{Left}^{Left}^{Left}^{Left}+^{Right}
+Send {Home}{F2}^{Home}+^{Right}
 Send +{Left}^c{esc}
 WinActivate Index voor nieuw document
 Send ^v
-Sleep, 3000
+Sleep, 2800
 Send {Down}{Enter}
 Send {Tab}{Tab}
 return
@@ -40,6 +37,7 @@ Send {Del}
 KeyWait, Enter, D
 Sleep, 1000
 WinActivate Dossier Klanten
+MouseClick, middle, 400, 125
 MouseClickDrag, Left, 400, 125, -1800, -200
 WinActivate ELO
 Send ^t{Up}
