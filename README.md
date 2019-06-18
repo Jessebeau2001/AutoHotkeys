@@ -30,8 +30,7 @@ When you have done the above steps preoceed to press AutoHotkeyU64.exe (Or your 
 Now to macro script should be active and the should be a green H pictograme in the bottom right of your screen (if its doesnt show up
 press the upward poitong arrow to show hidden icons).
 
-The following keybinds are now active:
-
+>The following keybinds are now active:
 Crtl+Np0 - Open the index screen of the selected file in ELO and automaticly copy over the customer ID
 Crtl+Np7 - Saves currently opened Index as 'Financiële brief'
 Crtl+Np8 - Saves currently opened Index as 'KvK Uitreksel'
