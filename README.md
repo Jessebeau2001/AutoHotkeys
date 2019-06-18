@@ -28,8 +28,8 @@ AutoHotkeyU64.ahk (and not AutoHotkeyU64.txt or AutoHotkeyU64.txt.ahk).
 
 When you have done the above steps preoceed to press AutoHotkeyU64.exe (Or your selected version)
 
-Now to macro script should be active and the should be a green H pictograme in the bottom right of your screen (if its doesnt show up
-press the upward poitong arrow to show hidden icons).
+Now the macro script should be active and there should be a green H icon in the bottom right of your screen (if its doesn't show up
+press the upward poiting arrow to show hidden icons).
 
 The following keybinds are now active:
 * Crtl+Np0 - Open the index screen of the selected file in ELO and automaticly copy over the customer ID
