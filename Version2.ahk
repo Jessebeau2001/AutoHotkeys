@@ -96,7 +96,10 @@ Promt() {
 		Send {Esc}
 		WinActivate ELO
 		Sleep, 400
-		Send ^{a}^{Del}{Enter}
+		Send ^{a}^{Del}
+		Sleep, 100
+		Send {Enter}
+		Sleep, 1000
 		Isolate()
 		Sleep, 200
 		WinActivate Dossier Klanten
