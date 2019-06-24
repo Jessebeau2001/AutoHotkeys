@@ -33,7 +33,7 @@ IDfetcher() {
 	Sleep, 400
 	Send {Tab}{Tab}
 	WinActivate Dossier Klanten
-	Send {Home}{F2}{Home}+^{Right}^{c}{esc}
+	Send {Home}{F2}{Home}+^{Right}+{Left}^{c}{esc}
 	WinActivate Index voor nieuw document
 	Send ^v
 	Sleep, 2500
