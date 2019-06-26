@@ -61,20 +61,19 @@ KeyWait Control
 Sleep, 400
 Send  {Del}
 KeyWait, Enter, D
-WinWait, ahk_class OperationStatusWindow,, 2
-if ErrorLevel
-{
-	MsgBox, Not found!
-	return
-}
-else
-WinWaitClose, ahk_class OperationStatusWindow,, 10
-if ErrorLevel
-{
-	MsgBox, Not closed?
-	return
-}
-else
+if (slowMode = "true") {
+	WinWait, ahk_class OperationStatusWindow,, 2
+	if ErrorLevel {
+		MsgBox, Not found, Maybe you want to disable slowMode by hitting Crtl+L
+		return
+	} else
+	WinWaitClose, ahk_class OperationStatusWindow,, 10
+	if ErrorLevel {
+		MsgBox, Not closed?
+		return
+	}
+} else
+resumeDel:
 Sleep, 400
 WinActivate Dossier Klanten
 MouseClickDrag, Left, 250, 125, -1700, 400, 5
@@ -122,7 +121,19 @@ Promt() {
 	}
 }
 
-Browser_Favorites::
+^Numpad6::
 IDfetcher()
 Promt()
 return
+
+^l::
+if (slowMode = "true") {
+	slowMode = false
+	MsgBox,,SlowMode , SlowMode is now disabled!, 2
+	return
+	} else
+slowMode = true
+MsgBox,,SlowMode , SlowMode is now enabled!, 2
+return
+
+slowMode = false
