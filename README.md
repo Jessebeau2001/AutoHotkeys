@@ -19,7 +19,7 @@ The script is able to do the following (ordered in action per keybind function):
   -Automatically Index to Financial letter, KvK documents & SEPA agreements.
   
 ## Usage:
-Please navigate to the Autohotkey website (https://www.autohotkey.com/download/) and press the 'Download AutoHotkey .zip' button to
+Please navigate to the [Autohotkey website](https://www.autohotkey.com/download/) and press the 'Download AutoHotkey .zip' button to
 download a portable version of Autohotkey. Next extract the .ZIP file to a folder of your choosing. Now open the newly extracted folder
 and create a text document with the exact name of one of the .EXE files (for example AutoHotkeyU64.exe becomes AutoHotkeyU64.txt).
 Now copy and paste the code form the repository to this text file. When you have done this press save as and save the file as for
@@ -37,3 +37,5 @@ The following keybinds are now active:
 * Crtl+Np8 - Saves currently opened Index as 'KvK Uitreksel'
 * Crtl+Np9 - Saves currently opened Index as 'SEPA machtiging'
 * Crtl+P   - Deletes top folder and moves the next new top folder to ELO and splits the PDF files
+
+**This list is not up to date!**
