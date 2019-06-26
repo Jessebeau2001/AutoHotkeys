@@ -1,3 +1,5 @@
+slowMode = false
+
 ^F5::Reload
 
 ^Numpad7::
@@ -64,7 +66,7 @@ KeyWait, Enter, D
 if (slowMode = "true") {
 	WinWait, ahk_class OperationStatusWindow,, 2
 	if ErrorLevel {
-		MsgBox, Not found, Maybe you want to disable slowMode by hitting Crtl+L
+		MsgBox, Not found, Maybe you'll want to try disabling slowMode by hitting Crtl+L
 		return
 	} else
 	WinWaitClose, ahk_class OperationStatusWindow,, 10
@@ -105,7 +107,11 @@ Promt() {
 		WinActivate ELO
 		Sleep, 400
 		Send ^{a}^{Del}
-		Sleep, 300
+		WinWait, Bestand(en),, 10
+		if ErrorLevel {
+			MsgBox, Error!
+			return
+			} else
 		Send {Enter}
 		Sleep, 1000
 		Isolate()
@@ -129,11 +135,9 @@ return
 ^l::
 if (slowMode = "true") {
 	slowMode = false
-	MsgBox,,SlowMode , SlowMode is now disabled!, 2
+	MsgBox,,slowMode , SlowMode is now disabled!, 2
 	return
 	} else
 slowMode = true
-MsgBox,,SlowMode , SlowMode is now enabled!, 2
+MsgBox,,slowMode , SlowMode is now enabled!, 2
 return
-
-slowMode = false
