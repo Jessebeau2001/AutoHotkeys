@@ -1,5 +1,5 @@
 slowMode = false
-
+#InstallMouseHook
 ^F5::Reload
 
 ^Numpad7::
@@ -12,15 +12,16 @@ if ErrorLevel
 	return
 }
 else
-Sleep 100
+WinActivate, Gebruiker Selecteren
+Sleep, 300
 Send {Tab}{Tab}{Tab}{Enter}
 WinWait, Er is geen user geselecteerd,, 10
 if ErrorLevel
 {
 	MsgBox, Timed out!
 	return
-}
-else
+} else
+WinActivate, Er is geen user geselecteerd
 Send {Enter}
 return
 
@@ -47,6 +48,7 @@ IDfetcher() {
 	Send {Home}{F2}{Home}+^{Right}+{Left}^{c}{esc}
 	WinActivate Index voor nieuw document
 	Send ^v
+	WinMove, Index voor nieuw document,,,, 1000, 800
 	Sleep, 2500
 	Send {Down}{Enter}
 	Send {Tab}{Tab}
@@ -90,10 +92,6 @@ Isolate() {
 	Sleep, 2000
 	Send {Home}
 }
-
-^Numpad5::
-Isolate()
-return
 
 Promt() {
 	InputBox, notFound, Available?, Customer registered y/n?, 640, 480, , 10, y/n
@@ -140,4 +138,8 @@ if (slowMode = "true") {
 	} else
 slowMode = true
 MsgBox,,slowMode , SlowMode is now enabled!, 2
+return
+
+Numpad3::
+listVars
 return
