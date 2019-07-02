@@ -2,6 +2,34 @@ slowMode = false
 #InstallMouseHook
 ^F5::Reload
 
+^Numpad0::
+IDfetcher()
+return
+
+^Numpad1::
+IDfetcher()
+Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Enter}
+return
+
+Numpad3::
+listVars
+return
+
+^Numpad4::
+IDfetcher()
+Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+return
+
+^Numpad5::
+IDfetcher()
+Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+return
+
+^Numpad6::
+IDfetcher()
+Promt()
+return
+
 ^Numpad7::
 IDfetcher()
 Send {Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
@@ -12,7 +40,7 @@ if ErrorLevel
 	return
 }
 else
-WinActivate, Gebruiker Selecteren
+WinActivate, Gebruiker selecteren
 Sleep, 300
 Send {Tab}{Tab}{Tab}{Enter}
 WinWait, Er is geen user geselecteerd,, 10
@@ -53,10 +81,6 @@ IDfetcher() {
 	Send {Down}{Enter}
 	Send {Tab}{Tab}
 }
-
-^Numpad0::
-IDfetcher()
-return
 
 ^p::
 WinActivate Dossier Klanten
@@ -125,11 +149,6 @@ Promt() {
 	}
 }
 
-^Numpad6::
-IDfetcher()
-Promt()
-return
-
 ^l::
 if (slowMode = "true") {
 	slowMode = false
@@ -138,8 +157,4 @@ if (slowMode = "true") {
 	} else
 slowMode = true
 MsgBox,,slowMode , SlowMode is now enabled!, 2
-return
-
-Numpad3::
-listVars
 return
