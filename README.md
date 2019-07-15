@@ -34,12 +34,14 @@ press the upward pointing arrow to show hidden icons).
 The following keybinds are now active:
 * Crtl+Np0 - Open the index screen of the selected file in ELO and automatically copy over the customer ID
 * Crtl+Np1 - Saves currently selected file as 'check-list'
+* Ctrl+Np2 - Saves currently selected file as 'gebruikers overeenkomst'
 * Crtl+Np4 - Saves currently selected file as 'Atrarius limiet'
 * Crtl+Np5 - Saves currently selected file as 'overig'
 * Crtl+Np6 - Checks wheter the currect ID is registerd, if not, it isolatesthe folder and moves over a new one.
 * Crtl+Np7 - Saves currently selected file as 'Financiële brief'
 * Crtl+Np8 - Saves currently selected file as 'KvK Uitreksel'
 * Crtl+Np9 - Saves currently selected file as 'SEPA machtiging'
+* Crtl+l   - Enables slow-mode, this mode waits for a progress box when deleting files.
 * Crtl+P   - Deletes top folder and moves the next new top folder to ELO and splits the PDF files
 
 **This list is not up to date!**
