@@ -11,6 +11,11 @@ IDfetcher()
 Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Enter}
 return
 
+^Numpad2::
+IDfetcher()
+Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Enter}
+Return
+
 Numpad3::
 listVars
 return
@@ -95,8 +100,8 @@ if (slowMode = "true") {
 		MsgBox, Not found, Maybe you'll want to try disabling slowMode by hitting Crtl+L
 		return
 	} else
-	WinWaitClose, ahk_class OperationStatusWindow,, 10
 	if ErrorLevel {
+	WinWaitClose, ahk_class OperationStatusWindow,, 10
 		MsgBox, Not closed?
 		return
 	}
