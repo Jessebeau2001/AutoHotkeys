@@ -1,4 +1,4 @@
-slowMode = false
+slowMode = true
 #InstallMouseHook
 ^F5::Reload
 
@@ -16,8 +16,9 @@ IDfetcher()
 Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Enter}
 Return
 
-Numpad3::
-listVars
+^Numpad3::
+IDfetcher()
+Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
 return
 
 ^Numpad4::
@@ -99,11 +100,13 @@ if (slowMode = "true") {
 	if ErrorLevel {
 		MsgBox, Not found, Maybe you'll want to try disabling slowMode by hitting Crtl+L
 		return
-	} else
-	if ErrorLevel {
+	} else {
 	WinWaitClose, ahk_class OperationStatusWindow,, 10
+		if ErrorLevel {
 		MsgBox, Not closed?
 		return
+		}
+	Sleep, 200
 	}
 } else
 resumeDel:
@@ -111,8 +114,6 @@ Sleep, 400
 WinActivate Dossier Klanten
 MouseClickDrag, Left, 250, 125, -1700, 400, 5
 WinActivate ELO
-Sleep, 2500
-Send ^t{Up}
 return
 
 Isolate() {
