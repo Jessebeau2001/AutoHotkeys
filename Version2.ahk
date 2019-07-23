@@ -1,5 +1,5 @@
 slowMode = true
-#InstallMouseHook
+#InstallkeybdHook
 ^F5::Reload
 
 ^Numpad0::
@@ -17,6 +17,8 @@ Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Do
 Return
 
 ^Numpad3::
+Send {F4}
+Clicky()
 IDfetcher()
 Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
 return
@@ -38,7 +40,7 @@ return
 
 ^Numpad7::
 IDfetcher()
-Send {Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+Send {Backspace}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
 WinWait, Gebruiker selecteren,, 10
 if ErrorLevel
 {
@@ -111,9 +113,7 @@ if (slowMode = "true") {
 } else
 resumeDel:
 Sleep, 400
-WinActivate Dossier Klanten
-MouseClickDrag, Left, 250, 125, -1700, 400, 5
-WinActivate ELO
+ImportMoveRel()
 return
 
 Isolate() {
@@ -155,6 +155,13 @@ Promt() {
 	}
 }
 
+Clicky() {
+	WinWait Index voor nieuw document
+	WinMove Index voor nieuw document,,,, 1000, 800
+	WinActivate Index voor nieuw document
+	MouseClick Left, 40, 250
+}
+
 ^l::
 if (slowMode = "true") {
 	slowMode = false
@@ -164,3 +171,22 @@ if (slowMode = "true") {
 slowMode = true
 MsgBox,,slowMode , SlowMode is now enabled!, 2
 return
+
+^m::
+if FileExist("conf.txt") {
+	MsgBox, Exists!!
+	} else {
+		FileAppend,, conf.txt
+		MsgBox, Created new config file beacause there was not an existing one!
+	}
+return
+
+ImportMoveRel(){
+WinActivate, ELO
+MouseMove, 90, 240, 2
+WinActivate, Dossier Klanten
+MouseGetPos, ELO_X, ELO_Y
+MouseMove, 250, 125, 2
+MouseGetPos, Dos_X, Dos_Y
+MouseClickDrag, Left, Dos_X, Dos_Y, ELO_X, ELO_Y, 2
+}
