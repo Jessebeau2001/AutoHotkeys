@@ -114,6 +114,7 @@ if (slowMode = "true") {
 resumeDel:
 Sleep, 400
 ImportMoveRel()
+WinActivate ELO
 return
 
 Isolate() {
