@@ -1,6 +1,6 @@
 slowMode = true
 
-InputBox, expWinName, Venster naam, Naam van het venste waar alle bestanden in opgeslagen zitten??
+;InputBox, expWinName, Venster naam, Naam van het venste waar alle bestanden in opgeslagen zitten??
 global expWinName
 Sleep, 100
 expWinName = Deventer ELO
@@ -123,6 +123,17 @@ if FileExist("conf.txt") {
 	}
 return
 
+typeGUI() {
+	Gui, New, , typePicker
+	Gui, add, button, default w80, Checklist
+	Gui, add, button, default w80, Internet
+	Gui, add, button, default w80, Financieel
+	Gui, add, button, default w80, KvK
+	Gui, add, button, default w80, SEPA
+	Gui, add, button, default w80, Atradius
+	Gui, add, button, default w80, Troep
+}
+
 IDfetcher() {
 	Send {F4}
 	WinWait, Index voor nieuw document,, 2
@@ -225,11 +236,12 @@ gotoFile(){
 	Send, ^{2}
 }
 
-^q::
+^r::
 Global Files := [] ;iniate the array object
 Global FileTypes := []
 Global FileAmount := []
 Global SavedFileArray := []
+typeGUI()
 InputBox, FileAmount, hoeveel Files?
 
 Loop  {
@@ -241,15 +253,62 @@ Loop  {
 	}
 	WinActivate, ELO
 	MouseClick, Left, 185, 217 + 28 * A_Index -28
-	InputBox, FileType, welk bestand?
+	Gui, show, , typePicker
+	KeyWait, Enter, D
+	Gui, hide
+	Sleep, 50
 	FileTypes[A_Index] := FileType
+	;MsgBox, % FileTypes[A_Index]
 }
 
-Compressor("Ja")
-Compressor("Nee")
+Compressor("Financieel")
+Compressor("Checklist")
+Compressor("Kvk")
+Compressor("Atradius")
+Compressor("Internet")
+Compressor("troep")
+Compressor("SEPA")
+
+MsgBox, END OF ULTRA FUNCTION
+return
+
+ButtonKvk:
+FileType = Kvk
+return
+ButtonChecklist:
+FileType = Checklist
+return
+ButtonSEPA:
+FileType = SEPA
+return
+ButtonFinancieel:
+FileType = Financieel
+return
+ButtonAtradius:
+FileType = Atradius
+return
+Buttontroep:
+FileType = Troep
+return
+ButtonInternet:
+FileType = Internet
 return
 
 Compressor(FileSort) {
+	typeCount := 0
+	Loop {
+		if (FileTypes[A_Index] = FileSort) {
+			typeCount := typeCount + 1
+		}
+		if (A_Index > FileAmount) {
+		;MsgBox, end of loop 1st: only %typeCount% could be found ;1st loop
+		Break
+		}
+	}
+	if (typeCount = "1") {
+		;MsgBox, there is only 1 %FileSort% so task failed sucesfully!
+		return
+	}
 	WinActivate, ELO
 	MouseMove, 185, 217 - 28
 	Loop {
@@ -257,10 +316,12 @@ Compressor(FileSort) {
 			Break
 		}
 		if (FileTypes[A_Index] = "0") {
-			MouseMove, 0, -28, 0, R
+			;MouseMove, 0, -28, 0, R
+			goto, skipMove
 		}
 		Sleep, 100
 		MouseMove, 0, 28, 0, R
+		skipMove:
 		if (FileTypes[A_Index] = FileSort) {
 			Send, {Control down}
 			MouseClick, Left
@@ -270,18 +331,9 @@ Compressor(FileSort) {
 			Sleep, 100
 		}
 	}
+	;MsgBox, The are %typeCount% %FileSort% files!
 	Send, ^{k}
 	Sleep, 500
-	WinWait, Pagina's, , 1
-	if ErrorLevel {
-	goto, continue
-	} else {
-		Send, {Return}
-		loop, % FileTypes.MaxIndex() {
-		FileTypes[A_Index] := SavedFileArray[A_index]
-		}
-		return
-	}
 	continue:
 	WinActivate, ELO
 	MouseMove, 185, 217
@@ -291,4 +343,5 @@ Compressor(FileSort) {
 	Sleep, 100
 	Send, {Control up}
 	Sleep, 100
+	;MsgBox, End of Compressor function
 }
