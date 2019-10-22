@@ -14,12 +14,12 @@ return
 
 ^Numpad1::
 IDfetcher()
-Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Enter}
+indexFile("false", "Checklist")
 return
 
 ^Numpad2::
 IDfetcher()
-Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Enter}
+indexFile("false", "Internet")
 Return
 
 ^Numpad3::
@@ -28,12 +28,12 @@ return
 
 ^Numpad4::
 IDfetcher()
-Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+indexFile("false", "Atradius")
 return
 
 ^Numpad5::
 IDfetcher()
-Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+indexFile("false", "Overig")
 return
 
 ^Numpad6::
@@ -43,36 +43,97 @@ return
 
 ^Numpad7::
 IDfetcher()
-Send {Backspace}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
-WinWait, Gebruiker selecteren,, 10
-if ErrorLevel
-{
-	MsgBox, Timed out!
-	return
-}
-else
-WinActivate, Gebruiker selecteren
-Sleep, 300
-Send {Tab}{Tab}{Tab}{Enter}
-WinWait, Er is geen user geselecteerd,, 10
-if ErrorLevel
-{
-	MsgBox, Timed out!
-	return
-} else
-WinActivate, Er is geen user geselecteerd
-Send {Enter}
+indexFile("false", "Financieel")
 return
 
 ^Numpad8::
 IDfetcher()
-Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+indexFile("false", "Kvk")
 return
 
 ^Numpad9::
 IDfetcher()
-Send {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+indexFile("false", "SEPA")
 return
+
+^NumpadDot::
+Send ^6
+WinActivate %expWinName%
+Send {Home}{F2}{Home}{Right}{Right}{Del}{Home}+^{Right}+{Left}^{c}{esc}
+WinActivate ELO
+Send ^v{Return}
+KeyWait, space, D
+Send, ^2
+return
+
+indexFile(F4, whichFile) {
+	if (F4 = "true" && whichFile != "Troep") {
+		Send {F4}
+		WinWait, Index voor nieuw document,, 2
+		if ErrorLevel
+			{
+			MsgBox, Timed out!
+			} else
+		Sleep 100
+		Send {Tab}{Tab}
+		Send ^v
+		WinMove, Index voor nieuw document,,,, 1000, 800
+		Sleep, 2500
+		Send {Down}{Enter}
+		Send {Tab}{Tab}
+	}
+	
+	switch whichFile
+	{
+		case "Checklist":
+		Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Enter}
+		return
+		case "Internet":
+		Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Enter}
+		return
+		case "Atradius":
+		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		return
+		case "Overig":
+		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		return
+		case "Financieel":
+		Send {Backspace}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+		WinWait, Gebruiker selecteren,, 10
+		if ErrorLevel
+		{
+			MsgBox, Timed out!
+			return
+		}
+		else
+		WinActivate, Gebruiker selecteren
+		Sleep, 300
+		Send {Tab}{Tab}{Tab}{Enter}
+		WinWait, Er is geen user geselecteerd,, 10
+		if ErrorLevel
+		{
+			MsgBox, Timed out!
+			return
+		} else
+		WinActivate, Er is geen user geselecteerd
+		Send {Enter}
+		return
+		case "Kvk":
+		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		return
+		case "SEPA":
+		Send {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+		return
+		case "Troep":
+		Send {Esc}
+		Sleep, 100
+		Send, {PgDn}^{Del}
+		Sleep, 100
+		Send {Return}
+		Sleep, 100
+		return
+	}
+}
 
 ^p::
 WinActivate %expWinName%
@@ -132,6 +193,7 @@ typeGUI() {
 	Gui, add, button, default w80, SEPA
 	Gui, add, button, default w80, Atradius
 	Gui, add, button, default w80, Troep
+	Gui, add, button, default w80, Overig
 }
 
 IDfetcher() {
@@ -241,8 +303,31 @@ Global Files := [] ;iniate the array object
 Global FileTypes := []
 Global FileAmount := []
 Global SavedFileArray := []
-typeGUI()
 InputBox, FileAmount, hoeveel Files?
+
+IDCheckerStart:
+Gui, Destroy
+WinActivate %expWinName%
+Send {Home}{F2}{Home}{Right}{Right}{Del}{Home}+^{Right}+{Left}^{c}{esc}
+Sleep, 100
+ID := clipboard
+Gui, New, , IDChecker
+Gui, Add, Text, , Fetched ID is %ID%
+Gui, add, button, default w80, Yes
+Gui, add, button, default w80, No
+Gui, show, , IDChecker
+return
+ButtonNo:
+goto, IDCheckerStart
+ButtonYes:
+Gui, Destroy
+
+if (FileAmount = 0 || FileAmount = "") {
+	MsgBox, There was no file amount specified/stopped function
+	return
+}
+
+typeGUI()
 
 Loop  {
 	if (A_Index > FileAmount) {
@@ -268,8 +353,9 @@ Compressor("Atradius")
 Compressor("Internet")
 Compressor("troep")
 Compressor("SEPA")
+Compressor("Overig")
 
-MsgBox, END OF ULTRA FUNCTION
+;MsgBox, END OF ULTRA FUNCTION
 return
 
 ButtonKvk:
@@ -293,6 +379,9 @@ return
 ButtonInternet:
 FileType = Internet
 return
+ButtonOverig:
+FileType = Overig
+return
 
 Compressor(FileSort) {
 	typeCount := 0
@@ -305,8 +394,7 @@ Compressor(FileSort) {
 		Break
 		}
 	}
-	if (typeCount = "1") {
-		;MsgBox, there is only 1 %FileSort% so task failed sucesfully!
+	if (typeCount = "0") {
 		return
 	}
 	WinActivate, ELO
@@ -332,9 +420,19 @@ Compressor(FileSort) {
 		}
 	}
 	;MsgBox, The are %typeCount% %FileSort% files!
+	if (typeCount = "1") {
+		goto, continue
+		;MsgBox, there is only 1 %FileSort% so task failed sucesfully!
+		return
+	}
 	Send, ^{k}
 	Sleep, 500
+	Send {PgDn}
 	continue:
+	indexFile("true", FileSort)
+	;MsgBox, End of Compressor function %FileSort%
+	;KeyWait, Control, D
+	WinWaitClose, Index voor nieuw document
 	WinActivate, ELO
 	MouseMove, 185, 217
 	MouseClick, Left
@@ -343,5 +441,4 @@ Compressor(FileSort) {
 	Sleep, 100
 	Send, {Control up}
 	Sleep, 100
-	;MsgBox, End of Compressor function
 }
