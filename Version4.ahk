@@ -28,7 +28,7 @@ return
 
 ^Numpad4::
 IDfetcher()
-indexFile("false", "Atradius")
+indexFile("false", "GenericLimit")
 return
 
 ^Numpad5::
@@ -63,42 +63,40 @@ Send {Home}{F2}{Home}{Right}{Right}{Del}{Home}+^{Right}+{Left}^{c}{esc}
 WinActivate ELO
 Send ^v{Return}
 KeyWait, space, D
+;Sleep, 800
+;pdfFinder("true")
+;Sleep, 400
 Send, ^2
 return
 
 indexFile(F4, whichFile) {
 	if (F4 = "true" && whichFile != "Troep") {
-		Send {F4}
-		WinWait, Index voor nieuw document,, 2
-		if ErrorLevel
-			{
-			MsgBox, Timed out!
-			} else
-		Sleep 100
-		Send {Tab}{Tab}
-		Send ^v
-		WinMove, Index voor nieuw document,,,, 1000, 800
-		Sleep, 2500
-		Send {Down}{Enter}
-		Send {Tab}{Tab}
+		hyperInsert()
 	}
 	
 	switch whichFile
 	{
 		case "Checklist":
-		Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Enter}
+		Send {backspace}{Down 5}{Right}{Down}{Enter}{Tab 3}{Enter}
 		return
 		case "Internet":
-		Send {backspace}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Enter}
+		Send {backspace}{Down 5}{Right}{Down 2}{Enter}{Tab}{Down 2}{Enter}{Tab 2}{Enter}
 		return
 		case "Atradius":
-		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		Send {Backspace}{Down 7}{Right}{Down}{Enter}{Tab 5}{Enter}
+		return
+		case "GenericLimit":
+		Send {Backspace}{Down 7}{Right}{Down 2}{Enter}{Tab 5}{Enter}
 		return
 		case "Overig":
-		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		if (F4 = "true") {
+			Send {Esc}
+			return
+		}
+		Send {Backspace}{Down 8}{Enter}{Tab 5}{Enter}
 		return
 		case "Financieel":
-		Send {Backspace}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+		Send {Backspace}{Down 3}{Right}{Down 6}{Enter}{Tab}{Down 2}{Enter}{Tab 4}{Enter}
 		WinWait, Gebruiker selecteren,, 10
 		if ErrorLevel
 		{
@@ -108,7 +106,7 @@ indexFile(F4, whichFile) {
 		else
 		WinActivate, Gebruiker selecteren
 		Sleep, 300
-		Send {Tab}{Tab}{Tab}{Enter}
+		Send {Tab 3}{Enter}
 		WinWait, Er is geen user geselecteerd,, 10
 		if ErrorLevel
 		{
@@ -119,10 +117,10 @@ indexFile(F4, whichFile) {
 		Send {Enter}
 		return
 		case "Kvk":
-		Send {Backspace}{Down}{Down}{Down}{Down}{Down}{Down}{Right}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Tab}{Enter}
+		Send {Backspace}{Down 6}{Right}{Down 5}{Enter}{Tab 5}{Enter}
 		return
 		case "SEPA":
-		Send {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Tab}{Down}{Down}{Enter}{Tab}{Tab}{Tab}{Tab}{Enter}
+		Send {Down 9}{Enter}{Tab}{Down 2}{Enter}{Tab 4}{Enter}
 		return
 		case "Troep":
 		Send {Esc}
@@ -185,6 +183,7 @@ if FileExist("conf.txt") {
 return
 
 typeGUI() {
+	global
 	Gui, New, , typePicker
 	Gui, add, button, default w80, Checklist
 	Gui, add, button, default w80, Internet
@@ -194,25 +193,17 @@ typeGUI() {
 	Gui, add, button, default w80, Atradius
 	Gui, add, button, default w80, Troep
 	Gui, add, button, default w80, Overig
+	Gui, Add, Progress, w200 h20 cRed vSortProgress, 0
+	Gui,+AlwaysOnTop
+	
+	ProgressAmount := 100/FileAmount
 }
 
 IDfetcher() {
-	Send {F4}
-	WinWait, Index voor nieuw document,, 2
-	if ErrorLevel
-		{
-		MsgBox, Timed out!
-		} else
-	Sleep 100
-	Send {Tab}{Tab}
 	WinActivate %expWinName%
 	Send {Home}{F2}{Home}{Right}{Right}{Del}{Home}+^{Right}+{Left}^{c}{esc}
-	WinActivate Index voor nieuw document
-	Send ^v
-	WinMove, Index voor nieuw document,,,, 1000, 800
-	Sleep, 2500
-	Send {Down}{Enter}
-	Send {Tab}{Tab}
+	WinActivate, ELO
+	hyperInsert()
 }
 
 Isolate() {
@@ -316,6 +307,7 @@ Gui, Add, Text, , Fetched ID is %ID%
 Gui, add, button, default w80, Yes
 Gui, add, button, default w80, No
 Gui, show, , IDChecker
+Send {Down}{Up}
 return
 ButtonNo:
 goto, IDCheckerStart
@@ -328,6 +320,7 @@ if (FileAmount = 0 || FileAmount = "") {
 }
 
 typeGUI()
+Gui, Show, X440 Y180, typePicker 
 
 Loop  {
 	if (A_Index > FileAmount) {
@@ -338,14 +331,14 @@ Loop  {
 	}
 	WinActivate, ELO
 	MouseClick, Left, 185, 217 + 28 * A_Index -28
-	Gui, show, , typePicker
+	WinActivate, typePicker
 	KeyWait, Enter, D
-	Gui, hide
-	Sleep, 50
+	GuiControl,, SortProgress, +%ProgressAmount%
 	FileTypes[A_Index] := FileType
 	;MsgBox, % FileTypes[A_Index]
 }
 
+Gui, hide
 Compressor("Financieel")
 Compressor("Checklist")
 Compressor("Kvk")
@@ -416,7 +409,7 @@ Compressor(FileSort) {
 			Send, {Control up}
 			FileTypes[A_Index] := SavedFileArray[A_index]
 			FileTypes[A_Index] := "0"
-			Sleep, 100
+			;Sleep, 100
 		}
 	}
 	;MsgBox, The are %typeCount% %FileSort% files!
@@ -441,4 +434,49 @@ Compressor(FileSort) {
 	Sleep, 100
 	Send, {Control up}
 	Sleep, 100
+}
+
+hyperInsert() {
+	Send {F4}
+	WinWait, Index voor nieuw document
+	Send {tab 2}^v
+	loop {
+		ImageSearch, _x, _y, 0, 0, 1000, 1000, H:\Persoonlijke map\Mijn Documenten\autohotkey\sidebar.bmp
+		If (ErrorLevel = 2) {
+			MsgBox, Could not conduct image sreach
+		} else if (ErrorLevel = 1) {
+		} else {
+			Send {Down}{Return}{tab 2}
+			;MsgBox, Image was found at X: %_x% & Y: %_y%,
+			break
+		}
+	}
+}
+
+^F7::
+pdfFinder("true")
+return
+
+pdfFinder(destroy) {
+	WinActivate, ELO
+	ImageSearch, pdfX, pdfY, 0, 0, 1000, 1000,  H:\Persoonlijke map\Mijn Documenten\autohotkey\pdfIcon.bmp
+	if (ErrorLevel = 1) {
+		return
+	} else if (ErrorLevel = 0) {
+		MouseClick, Left, pdfX, pdfY, 1, 0
+		Sleep, 500
+		ImageSearch, pdfX, pdfY, 0, 0, 1000, 1000,  H:\Persoonlijke map\Mijn Documenten\autohotkey\pdfIconBlue.bmp
+		if (ErrorLevel = 0) {
+		sleep, 600
+			if (destroy = "true") {
+				Send, ^{Del}
+				Send, {Return}
+				;KeyWait, Enter, D
+				Sleep, 400
+				pdfFinder("true")
+			}
+
+		}
+		return
+	}
 }
