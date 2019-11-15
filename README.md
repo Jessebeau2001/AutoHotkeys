@@ -1,4 +1,4 @@
-# ELO user automation with AutoHotkey
+# ELO user automation with AutoHotkey *Heavily Outdated*
 ## Introduction:
 This is an AutoHotkey script made to get some automation into your workflow for sorting customer files. It can do things like auto
 Index with a key combination so you won't have to select each file type manually usually saving up to 30 seconds per Index.
