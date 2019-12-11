@@ -22,9 +22,9 @@ IDfetcher()
 indexFile("false", "Internet")
 Return
 
-^Numpad3::
-gotoFile()
-return
+; ^Numpad3::
+; gotoFile()
+; return
 
 ^Numpad4::
 IDfetcher()
@@ -38,7 +38,7 @@ return
 
 ^Numpad6::
 IDfetcher()
-Promt()
+indexFile("false", "Register")
 return
 
 ^Numpad7::
@@ -83,7 +83,10 @@ indexFile(F4, whichFile) {
 		Send {backspace}{Down 5}{Right}{Down 2}{Enter}{Tab}{Down 2}{Enter}{Tab 2}{Enter}
 		return
 		case "Atradius":
-		Send {Backspace}{Down 7}{Right}{Down}{Enter}{Tab 5}{Enter}
+		Send {Backspace}{Down 7}{Right}{Down 2}{Enter}{Tab 5}{Enter}
+		return
+		case "Register":
+		Send {backspace}{Down 5}{Right}{Down 3}{Enter}{Tab 5}{Enter}
 		return
 		case "GenericLimit":
 		Send {Backspace}{Down 7}{Right}{Down 2}{Enter}{Tab 5}{Enter}
@@ -348,7 +351,7 @@ Compressor("troep")
 Compressor("SEPA")
 Compressor("Overig")
 
-;MsgBox, END OF ULTRA FUNCTION
+; MsgBox, END OF ULTRA FUNCTION
 return
 
 ButtonKvk:
@@ -441,7 +444,8 @@ hyperInsert() {
 	WinWait, Index voor nieuw document
 	Send {tab 2}^v
 	loop {
-		ImageSearch, _x, _y, 0, 0, 1000, 1000, H:\Persoonlijke map\Mijn Documenten\autohotkey\sidebar.bmp
+		ImageSearch, _x, _y, 0, 0, 1000, 1000, ImageSearchFiles\sidebar.bmp
+		;H:\Persoonlijke map\Mijn Documenten\autohotkey\sidebar.bmp
 		If (ErrorLevel = 2) {
 			MsgBox, Could not conduct image sreach
 		} else if (ErrorLevel = 1) {
@@ -479,4 +483,21 @@ pdfFinder(destroy) {
 		}
 		return
 	}
+}
+
+commonDivisor() {
+	InputBox, A, A?, Give A a size
+	InputBox, B, B?, And now give B a size	
+	Step2:
+	If (B = 0) {
+		MsgBox, % A
+		return
+	} else if (A > B) {
+		A := A - B
+		goto, Step2
+	} else {
+		B := B - A
+		Goto, Step2
+	}
+	MsgBox, ?
 }
